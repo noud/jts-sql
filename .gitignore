@@ -1,0 +1,13 @@
+#
+var
+
+# npm dependency directory
+node_modules
+
+# Eclipse
+.buildpath
+.jshintrc
+.project
+.settings
+.sublime-project
+.tern-project
