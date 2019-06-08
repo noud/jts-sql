@@ -14,35 +14,33 @@ var tablename = tablename.substring(0, tablename.indexOf('.json'));
 http.get(schema, (resp) => {
   // A chunk of data has been recieved.
   resp.on('data', (chunk) => {
-	  data += chunk;
+    data += chunk;
   });
 
   // The whole response has been received. Print out the result.
   resp.on('end', () => {
-	  //console.log(data);
-	  var dataJson = JSON.parse(data);
-	  switch (dbdialect) {
-		case 'sqlite':
-			var engine = new Sequelize('datastore', 'datastore', '', {
-				dialect: dbdialect,
-				storage:  './var/'+dbname+'.db'
-			});
-			break;
-		case 'mysql':
-			var engine = new Sequelize({
-			    dialect: dbdialect,
-			    database: dbname,
-			    username: 'root',
-			    password: 'root'
-			  });
-			//tableStorage = 'mysql://root:root@mysql:3306/'+dbname;
-			break;
-	  };
+    var dataJson = JSON.parse(data);
+    switch (dbdialect) {
+    case 'sqlite':
+      var engine = new Sequelize('datastore', 'datastore', '', {
+        dialect: dbdialect,
+        storage:  './var/'+dbname+'.db'
+      });
+      break;
+    case 'mysql':
+      var engine = new Sequelize({
+        dialect: dbdialect,
+        database: dbname,
+        username: 'root',
+        password: 'root'
+      });
+      break;
+    };
 
-	  var table = SchemaTable(engine, tablename, dataJson);
-	  table.create().then(function () {
-	  	console.log('CREATE TABLE '+tablename);
-	  });
+    var table = SchemaTable(engine, tablename, dataJson);
+    table.create().then(function () {
+      console.log('CREATE TABLE '+tablename);
+    });
   });
 
 }).on("error", (err) => {
